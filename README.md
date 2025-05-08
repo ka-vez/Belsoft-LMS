@@ -50,7 +50,8 @@ The API is deployed on Render and includes interactive documentation via Swagger
 ### 📖 Borrow a Book
 
 - **Endpoint**: `POST /books/borrow-book/{book_id}`  
-- **Description**: Marks a specific book as borrowed.  
+- **Description**: Marks a specific book as borrowed.
+- **Authentication**: Required
 - **Path Parameter**:
   - `book_id` (integer): ID of the book to borrow.  
 - **Response**:
@@ -63,7 +64,8 @@ The API is deployed on Render and includes interactive documentation via Swagger
 ### 📖 Return a Book
 
 - **Endpoint**: `POST /books/return-book/{book_id}`  
-- **Description**: Marks a specific book as returned.  
+- **Description**: Marks a specific book as returned.
+- **Authentication**: Required
 - **Path Parameter**:
   - `book_id` (integer): ID of the book to return.  
 - **Response**:
@@ -76,7 +78,7 @@ The API is deployed on Render and includes interactive documentation via Swagger
 ### 📚 View All Available Books
 
 - **Endpoint**: `POST /books/available`  
-- **Description**: Retrieves a list of all books that are currently available (not borrowed).  
+- **Description**: Retrieves a list of all books that are currently available (not borrowed).
 - **Response**:
 ```json
 {
@@ -93,7 +95,21 @@ The API is deployed on Render and includes interactive documentation via Swagger
     "author": "Andrew Hunt",
     "borrowed": false
   }
-]
-
+  ]
 }
+```
+
+---
+
+## 🔐 Authentication Required
+
+To use certain protected endpoints (e.g. **Borrow a Book**, **Return a Book**), you must:
+
+1. **Create an account** using the `/register` endpoint.
+2. **Login** using the `/login` endpoint to receive an access token.
+3. **Include the access token** in the `Authorization` header as a Bearer token.
+
+### Example Header:
+```http
+Authorization: Bearer <your-access-token>
 
