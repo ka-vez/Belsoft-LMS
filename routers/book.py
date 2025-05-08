@@ -7,14 +7,15 @@ from sqlmodel import Session, select
 from typing import Annotated
 
 
-router = APIRouter(prefix="/book", tags=["book"])
+router = APIRouter(prefix="/books", tags=["books"])
 
 db_dependency = Annotated[Session, Depends(get_session)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
-@router.get("/")
-async def all_books(db: db_dependency):
-    return db.exec(select(Book)).all()
+@router.get("/available")
+async def all_available_books(db: db_dependency):
+    books = db.exec(select(Book).filter(Book.borrowed == False)).all()
+    return [book.model_dump(exclude={'borrowed_user_id'}) for book in books]
 
 @router.post("/create-book", status_code=status.HTTP_201_CREATED)
 async def create_book(db: db_dependency, book_create: BookCreate):
